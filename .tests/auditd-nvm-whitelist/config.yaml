@@ -1,0 +1,13 @@
+parsers:
+- crowdsecurity/syslog-logs
+- crowdsecurity/auditd-logs
+- crowdsecurity/dateparse-enrich
+scenarios:
+#- crowdsecurity/auditd-sus-exec
+postoverflows:
+- "./postoverflows/s01-whitelist/crowdsecurity/auditd-nvm-whitelist-process.yaml"
+log_file: auditd-logs.log
+log_type: auditd
+labels: {}
+ignore_parsers: false
+override_statics: []
