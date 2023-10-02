@@ -3,7 +3,7 @@ parsers:
 - crowdsecurity/auditd-logs
 - crowdsecurity/dateparse-enrich
 scenarios:
-#- crowdsecurity/auditd-sus-exec
+- crowdsecurity/auditd-sus-exec
 postoverflows:
 - "./postoverflows/s01-whitelist/crowdsecurity/auditd-nvm-whitelist-process.yaml"
 log_file: auditd-logs.log
