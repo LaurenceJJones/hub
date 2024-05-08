@@ -1,0 +1,12 @@
+parsers:
+- crowdsecurity/iptables-logs
+- crowdsecurity/syslog-logs
+- crowdsecurity/dateparse-enrich
+- ./parsers/s02-enrich/crowdsecurity/port-service-enrich.yaml
+scenarios:
+- ""
+postoverflows:
+- ""
+log_file: iptables-logs.log
+log_type: syslog
+ignore_parsers: false
