@@ -1,0 +1,23 @@
+onsuccess: next_stage
+filter: evt.Parsed.program == 'modsecurity-nginx-json' && UnmarshalJSON(evt.Parsed.message, evt.Unmarshaled, 'modsecurity') in ['', nil]
+name: crowdsecurity/modsecurity-nginx-json
+#debug: true
+description: A parser for modsecurity WAF using JSON format
+statics:
+  - meta: log_type
+    value: modsecurity
+  - meta: source_ip
+    expression: evt.Unmarshaled.modsecurity.transaction["client_ip"]
+  - target: evt.StrTime
+    expression: evt.Unmarshaled.modsecurity.transaction["time_stamp"]
+  ### Modsecurity fields to be compatible with original scenario
+  ### For these fields we grab the first message in the messages array
+  - meta: rule_id
+    expression: "len(evt.Unmarshaled.modsecurity.transaction.messages) > 0 ? reduce(evt.Unmarshaled.modsecurity.transaction.messages, int(#acc.details.severity) > int(#.details.severity) ? #acc : #).details.ruleId : ''"
+  - meta: modsec_message
+    expression: "len(evt.Unmarshaled.modsecurity.transaction.messages) > 0 ? reduce(evt.Unmarshaled.modsecurity.transaction.messages, int(#acc.details.severity) > int(#.details.severity) ? #acc : #).message : ''"
+  - meta: modsec_ruledata
+    expression: "len(evt.Unmarshaled.modsecurity.transaction.messages) > 0 ? reduce(evt.Unmarshaled.modsecurity.transaction.messages, int(#acc.details.severity) > int(#.details.severity) ? #acc : #).details.data : ''"
+  - parsed: ruleseverity
+    expression: "len(evt.Unmarshaled.modsecurity.transaction.messages) > 0 ? reduce(evt.Unmarshaled.modsecurity.transaction.messages, int(#acc.details.severity) > int(#.details.severity) ? #acc : #).details.severity : ''"
+  ##################################
